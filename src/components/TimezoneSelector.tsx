@@ -1,3 +1,4 @@
+import { useState, useMemo } from 'react';
 import { TimezoneDisplay } from '@/types';
 
 interface TimezoneSelectorProps {
@@ -11,11 +12,33 @@ function TimezoneSelector({
   selectedTimezones,
   onTimezoneToggle,
 }: TimezoneSelectorProps) {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredTimezones = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return availableTimezones;
+    }
+
+    const query = searchQuery.toLowerCase();
+    return availableTimezones.filter(timezone =>
+      timezone.name.toLowerCase().includes(query)
+    );
+  }, [availableTimezones, searchQuery]);
+
   return (
     <div className="timezone-selector">
       <h3>Select Timezones</h3>
+      <div className="timezone-search">
+        <input
+          type="text"
+          placeholder="Search timezones..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-input"
+        />
+      </div>
       <div className="timezone-grid">
-        {availableTimezones.map(timezone => {
+        {filteredTimezones.map(timezone => {
           const isSelected = selectedTimezones.some(tz => tz.id === timezone.id);
 
           return (
