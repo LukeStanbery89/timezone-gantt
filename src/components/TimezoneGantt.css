@@ -315,40 +315,33 @@
   overflow-y: hidden;
 }
 
-.timezone-timeline svg {
+.timezone-timeline > div {
   border: 1px solid #f0f0f0;
   border-radius: 4px;
-  display: block;
+  padding: 10px;
+  background: white;
 }
 
-.timezone-timeline .timezone-label {
-  font-weight: 500;
-  fill: #333;
-  font-size: 12px;
+/* Chart.js canvas styling */
+.timezone-timeline canvas {
+  border-radius: 4px;
 }
 
-.timezone-timeline .time-range-bar {
-  cursor: pointer;
-  transition: fill-opacity 0.2s;
+/* Custom tooltip styling for Chart.js */
+.chartjs-tooltip {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
 }
 
-.timezone-timeline .time-range-bar:hover {
-  fill-opacity: 1 !important;
+.chartjs-tooltip-title {
+  font-weight: 600 !important;
+  color: #333 !important;
 }
 
-.timezone-timeline .time-label {
-  font-weight: 500;
-  pointer-events: none;
-}
-
-.timezone-timeline .x-axis path,
-.timezone-timeline .x-axis line {
-  stroke: #ddd;
-}
-
-.timezone-timeline .x-axis text {
-  fill: #666;
-  font-size: 11px;
+.chartjs-tooltip-body {
+  color: #666 !important;
 }
 
 /* Responsive design */

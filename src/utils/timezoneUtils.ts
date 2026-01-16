@@ -211,3 +211,43 @@ export function formatTimeInTimezone(
 ): string {
   return formatInTimeZone(date, timezoneId, formatString);
 }
+
+/**
+ * Transform timezone data for Chart.js horizontal bar chart
+ */
+export function transformTimezoneDataForChart(
+  timezones: TimezoneDisplay[],
+  timeRange: { startDate: Date; endDate: Date; referenceTimezone: string }
+) {
+  // Find the earliest and latest times across all timezones for the scale
+  let earliestTime = timeRange.startDate;
+  let latestTime = timeRange.endDate;
+
+  timezones.forEach(timezone => {
+    const localStart = convertTime(timeRange.startDate, timeRange.referenceTimezone, timezone.id);
+    const localEnd = convertTime(timeRange.endDate, timeRange.referenceTimezone, timezone.id);
+    if (localStart < earliestTime) earliestTime = localStart;
+    if (localEnd > latestTime) latestTime = localEnd;
+  });
+
+  // Add some padding to the time range
+  const timePadding = (latestTime.getTime() - earliestTime.getTime()) * 0.1;
+  earliestTime = new Date(earliestTime.getTime() - timePadding);
+  latestTime = new Date(latestTime.getTime() + timePadding);
+
+  // Create labels and data for Chart.js - using floating bars [start, end]
+  const labels = timezones.map(tz => `${tz.name} (${tz.abbreviation})`);
+  const data = timezones.map(timezone => {
+    const localStart = convertTime(timeRange.startDate, timeRange.referenceTimezone, timezone.id);
+    const localEnd = convertTime(timeRange.endDate, timeRange.referenceTimezone, timezone.id);
+
+    // For Chart.js floating bars, return [start, end] as timestamp numbers
+    return [localStart.getTime(), localEnd.getTime()] as [number, number];
+  });
+
+  return {
+    labels,
+    data,
+    timeRange: { min: earliestTime, max: latestTime }
+  };
+}
