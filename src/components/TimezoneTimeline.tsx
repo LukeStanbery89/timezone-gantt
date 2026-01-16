@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import {
-  ChartData,
-  ChartOptions,
-  Plugin,
+    ChartData,
+    ChartOptions,
+    Plugin as ChartJSPlugin,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { TimezoneDisplay } from '@/types';
@@ -12,7 +12,7 @@ import { transformTimezoneDataForChart, formatTimeInTimezone } from '@/utils/tim
  * Custom hook to create the time labels plugin for Chart.js
  * Memoized to prevent recreation on every render
  */
-const useTimeLabelsPlugin = (timezones: TimezoneDisplay[]): Plugin<'bar'> => {
+const useTimeLabelsPlugin = (timezones: TimezoneDisplay[]): ChartJSPlugin<'bar'> => {
   return useMemo(() => ({
     id: 'timeLabels',
     afterDraw: (chart) => {
