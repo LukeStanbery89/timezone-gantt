@@ -28,7 +28,7 @@ function TimezoneGanttView({
   return (
     <div className="max-w-[1400px] mx-auto p-5 font-sans">
       <div className="flex gap-5 h-[calc(100vh-200px)] flex-col md:flex-row">
-        <aside className="w-[280px] flex-shrink-0 overflow-y-auto border border-gray-200 rounded-lg bg-white p-0 md:w-full md:max-h-[300px]" role="complementary" aria-label="Timezone selection">
+        <aside className="w-full max-h-[300px] flex-shrink-0 overflow-y-auto border border-gray-200 rounded-lg bg-white p-0 md:w-[280px] md:max-h-none" role="complementary" aria-label="Timezone selection">
           <TimezoneSelector
             availableTimezones={availableTimezones}
             selectedTimezones={selectedTimezones}
