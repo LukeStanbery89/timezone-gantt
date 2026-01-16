@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { TimeRange } from '@/types';
 import { getUserTimezone } from '@/utils/timezoneUtils';
 
@@ -28,9 +28,13 @@ export function useTimeRange() {
     };
   });
 
-  const handleTimeRangeChange = (newTimeRange: TimeRange) => {
-    setTimeRange(newTimeRange);
-  };
+  // Memoize the change handler to prevent unnecessary re-renders
+  const handleTimeRangeChange = useMemo(() =>
+    (newTimeRange: TimeRange) => {
+      setTimeRange(newTimeRange);
+    },
+    []
+  );
 
   return {
     timeRange,

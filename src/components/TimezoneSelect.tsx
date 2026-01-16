@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { TimezoneDisplay } from '@/types';
 
 interface TimezoneSelectProps {
@@ -11,9 +11,11 @@ interface TimezoneSelectProps {
 }
 
 function TimezoneSelect({ label, value, options, onChange, disabled, error }: TimezoneSelectProps) {
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     onChange(e.target.value);
-  };
+  }, [onChange]);
+
+  const errorId = useMemo(() => `timezone-error-${label.toLowerCase().replace(' ', '-')}`, [label]);
 
   return (
     <div className="timezone-select">
@@ -25,19 +27,26 @@ function TimezoneSelect({ label, value, options, onChange, disabled, error }: Ti
         value={value}
         onChange={handleChange}
         disabled={disabled}
-        aria-describedby={error ? `timezone-error-${label.toLowerCase().replace(' ', '-')}` : undefined}
+        aria-describedby={error ? errorId : `${label.toLowerCase().replace(' ', '-')}-select-help`}
+        aria-invalid={!!error}
+        required
       >
+        <option value="">Select a timezone...</option>
         {options.map(timezone => (
           <option key={timezone.id} value={timezone.id}>
             {timezone.name} ({timezone.abbreviation})
           </option>
         ))}
       </select>
+      <div id={`${label.toLowerCase().replace(' ', '-')}-select-help`} className="sr-only">
+        Choose your {label.toLowerCase()} from the available options
+      </div>
       {error && (
         <div
-          id={`timezone-error-${label.toLowerCase().replace(' ', '-')}`}
+          id={errorId}
           className="error-message"
           role="alert"
+          aria-live="assertive"
         >
           {error}
         </div>

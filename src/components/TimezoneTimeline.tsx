@@ -163,24 +163,28 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
 
   if (!chartData) {
     return (
-      <div className="chart-error">
+      <div className="chart-error" role="status" aria-live="polite">
         <p>Unable to display timeline. Please check your timezone selections.</p>
       </div>
     );
   }
 
   try {
-    return (
-      <div className="timezone-timeline">
-        <div style={{ height: `${timezones.length * 60 + 40}px` }}>
-          <Bar data={chartData.data} options={options} />
-        </div>
+  return (
+    <div className="timezone-timeline">
+      <div
+        style={{ height: `${timezones.length * 60 + 40}px` }}
+        role="img"
+        aria-label={`Timeline showing ${timezones.length} timezone${timezones.length !== 1 ? 's' : ''} from ${chartData.timeRange.min.toLocaleString()} to ${chartData.timeRange.max.toLocaleString()}`}
+      >
+        <Bar data={chartData.data} options={options} />
       </div>
-    );
+    </div>
+  );
   } catch (error) {
     console.error('Error rendering chart:', error);
     return (
-      <div className="chart-error">
+      <div className="chart-error" role="alert">
         <p>Failed to render timeline. Please try refreshing the page.</p>
       </div>
     );

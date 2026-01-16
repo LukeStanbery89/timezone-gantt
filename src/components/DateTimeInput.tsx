@@ -13,6 +13,7 @@ function DateTimeInput({ label, date, onDateChange, timezoneId, error }: DateTim
   // Memoize formatted values to prevent unnecessary recalculations
   const dateValue = useMemo(() => formatDateForInput(date), [date]);
   const timeValue = useMemo(() => formatTimeForInput(date), [date]);
+  const errorId = useMemo(() => `error-${label.toLowerCase().replace(' ', '-')}`, [label]);
 
   const handleDateChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const newDateValue = e.target.value;
@@ -44,8 +45,13 @@ function DateTimeInput({ label, date, onDateChange, timezoneId, error }: DateTim
             type="date"
             value={dateValue}
             onChange={handleDateChange}
-            aria-describedby={error ? `${label.toLowerCase().replace(' ', '-')}-error` : undefined}
+            aria-describedby={error ? errorId : `${label.toLowerCase().replace(' ', '-')}-date-help`}
+            aria-invalid={!!error}
+            required
           />
+          <div id={`${label.toLowerCase().replace(' ', '-')}-date-help`} className="sr-only">
+            Select the date for {label.toLowerCase()}
+          </div>
         </div>
         <div className="time-input">
           <label htmlFor={`${label.toLowerCase().replace(' ', '-')}-time`}>Time:</label>
@@ -54,20 +60,26 @@ function DateTimeInput({ label, date, onDateChange, timezoneId, error }: DateTim
             type="time"
             value={timeValue}
             onChange={handleTimeChange}
-            aria-describedby={error ? `${label.toLowerCase().replace(' ', '-')}-error` : undefined}
+            aria-describedby={error ? errorId : `${label.toLowerCase().replace(' ', '-')}-time-help`}
+            aria-invalid={!!error}
+            required
           />
+          <div id={`${label.toLowerCase().replace(' ', '-')}-time-help`} className="sr-only">
+            Select the time for {label.toLowerCase()}
+          </div>
         </div>
       </div>
       {timezoneId && (
-        <div className="timezone-display">
+        <div className="timezone-display" aria-live="polite">
           Timezone: {timezoneId}
         </div>
       )}
       {error && (
         <div
-          id={`${label.toLowerCase().replace(' ', '-')}-error`}
+          id={errorId}
           className="error-message"
           role="alert"
+          aria-live="assertive"
         >
           {error}
         </div>

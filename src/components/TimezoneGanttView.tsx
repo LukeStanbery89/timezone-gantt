@@ -30,14 +30,15 @@ function TimezoneGanttView({
   return (
     <div className="timezone-gantt">
       <div className="main-content">
-        <div className="sidebar">
+        <aside className="sidebar" role="complementary" aria-label="Timezone selection">
           <TimezoneSelector
             availableTimezones={availableTimezones}
             selectedTimezones={selectedTimezones}
             onTimezoneToggle={onTimezoneToggle}
           />
-        </div>
-        <div className="main-panel">
+        </aside>
+
+        <main className="main-panel" role="main" aria-label="Timeline visualization">
           <TimeRangeInput
             value={timeRange}
             referenceTimezones={availableTimezones}
@@ -45,13 +46,19 @@ function TimezoneGanttView({
             showOnlyBusinessTimezones={showOnlyBusinessTimezones}
             onShowOnlyBusinessTimezonesChange={onShowOnlyBusinessTimezonesChange}
           />
-          <div className="timeline-container">
+
+          <section
+            className="timeline-container"
+            aria-label="Timezone timeline visualization"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             <TimezoneTimeline
               timezones={sortedTimezones}
               timeRange={timeRange}
             />
-          </div>
-        </div>
+          </section>
+        </main>
       </div>
     </div>
   );
