@@ -69,24 +69,29 @@ interface TimezoneTimelineProps {
 
 function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
   const chartData = useMemo(() => {
-    if (timezones.length === 0) return null;
+    try {
+      if (timezones.length === 0) return null;
 
-    const transformedData = transformTimezoneDataForChart(timezones, timeRange);
+      const transformedData = transformTimezoneDataForChart(timezones, timeRange);
 
-    const data: ChartData<'bar'> = {
-      labels: transformedData.labels,
-      datasets: [{
-        label: 'Time Range',
-        data: transformedData.data,
-        backgroundColor: 'rgba(33, 150, 243, 0.7)',
-        borderColor: 'rgba(25, 118, 210, 1)',
-        borderWidth: 1,
-        borderRadius: 4,
-        barThickness: 20,
-      }]
-    };
+      const data: ChartData<'bar'> = {
+        labels: transformedData.labels,
+        datasets: [{
+          label: 'Time Range',
+          data: transformedData.data,
+          backgroundColor: 'rgba(33, 150, 243, 0.7)',
+          borderColor: 'rgba(25, 118, 210, 1)',
+          borderWidth: 1,
+          borderRadius: 4,
+          barThickness: 20,
+        }]
+      };
 
-    return { data, timeRange: transformedData.timeRange };
+      return { data, timeRange: transformedData.timeRange };
+    } catch (error) {
+      console.error('Error transforming chart data:', error);
+      return null;
+    }
   }, [timezones, timeRange]);
 
   const timeLabelsPlugin = useTimeLabelsPlugin(timezones);
@@ -156,13 +161,30 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
 
   if (!chartData) return null;
 
-  return (
-    <div className="timezone-timeline">
-      <div style={{ height: `${timezones.length * 60 + 40}px` }}>
-        <Bar data={chartData.data} options={options} />
+  if (!chartData) {
+    return (
+      <div className="chart-error">
+        <p>Unable to display timeline. Please check your timezone selections.</p>
       </div>
-    </div>
-  );
+    );
+  }
+
+  try {
+    return (
+      <div className="timezone-timeline">
+        <div style={{ height: `${timezones.length * 60 + 40}px` }}>
+          <Bar data={chartData.data} options={options} />
+        </div>
+      </div>
+    );
+  } catch (error) {
+    console.error('Error rendering chart:', error);
+    return (
+      <div className="chart-error">
+        <p>Failed to render timeline. Please try refreshing the page.</p>
+      </div>
+    );
+  }
 }
 
 export default TimezoneTimeline;

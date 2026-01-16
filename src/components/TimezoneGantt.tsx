@@ -14,27 +14,41 @@ function TimezoneGantt() {
   const timeRangeHook = useTimeRange();
 
   const handleTimeRangeChange = (newTimeRange: TimeRange) => {
-    const referenceTimezoneChanged = newTimeRange.referenceTimezone !== timeRangeHook.timeRange.referenceTimezone;
+    try {
+      if (!newTimeRange || !newTimeRange.startDate || !newTimeRange.endDate || !newTimeRange.referenceTimezone) {
+        console.error('Invalid time range provided:', newTimeRange);
+        return;
+      }
 
-    if (referenceTimezoneChanged) {
-      // Handle timezone selection logic when reference timezone changes
-      timezoneSelection.setSelectedTimezones(prev => {
-        let newSelected = [...prev];
+      const referenceTimezoneChanged = newTimeRange.referenceTimezone !== timeRangeHook.timeRange.referenceTimezone;
 
-        // Always unselect the old reference timezone
-        newSelected = newSelected.filter(tz => tz.id !== timeRangeHook.timeRange.referenceTimezone);
+      if (referenceTimezoneChanged) {
+        // Handle timezone selection logic when reference timezone changes
+        timezoneSelection.setSelectedTimezones(prev => {
+          try {
+            let newSelected = [...prev];
 
-        // Always select the new reference timezone
-        const referenceTimezone = availableTimezones.find(tz => tz.id === newTimeRange.referenceTimezone);
-        if (referenceTimezone && !newSelected.some(tz => tz.id === newTimeRange.referenceTimezone)) {
-          newSelected.push(referenceTimezone);
-        }
+            // Always unselect the old reference timezone
+            newSelected = newSelected.filter(tz => tz.id !== timeRangeHook.timeRange.referenceTimezone);
 
-        return newSelected;
-      });
+            // Always select the new reference timezone
+            const referenceTimezone = availableTimezones.find(tz => tz.id === newTimeRange.referenceTimezone);
+            if (referenceTimezone && !newSelected.some(tz => tz.id === newTimeRange.referenceTimezone)) {
+              newSelected.push(referenceTimezone);
+            }
+
+            return newSelected;
+          } catch (error) {
+            console.error('Error updating timezone selection:', error);
+            return prev; // Return previous state on error
+          }
+        });
+      }
+
+      timeRangeHook.handleTimeRangeChange(newTimeRange);
+    } catch (error) {
+      console.error('Error handling time range change:', error);
     }
-
-    timeRangeHook.handleTimeRangeChange(newTimeRange);
   };
 
   return (
