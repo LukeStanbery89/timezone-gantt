@@ -14,10 +14,18 @@ function TimezoneGantt() {
   const [selectedTimezones, setSelectedTimezones] = useState<TimezoneDisplay[]>([]);
   const [timeRange, setTimeRange] = useState<TimeRange>(() => {
     const userTimezone = getUserTimezone();
+
+    // Round current time up to nearest hour
     const startTime = new Date(currentTime);
-    startTime.setHours(9, 0, 0, 0); // Default to 9 AM today
-    const endTime = new Date(currentTime);
-    endTime.setHours(17, 0, 0, 0); // Default to 5 PM today
+    if (startTime.getMinutes() > 0) {
+      startTime.setHours(startTime.getHours() + 1, 0, 0, 0);
+    } else {
+      startTime.setMinutes(0, 0, 0);
+    }
+
+    // Set end time to start time + 1 hour
+    const endTime = new Date(startTime);
+    endTime.setHours(startTime.getHours() + 1);
 
     return {
       startDate: startTime,
