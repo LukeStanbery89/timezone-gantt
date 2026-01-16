@@ -14,15 +14,18 @@ interface TimezoneTimelineProps {
 
 function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
   const svgRef = useRef<SVGSVGElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!svgRef.current || timezones.length === 0) return;
+    if (!svgRef.current || !containerRef.current || timezones.length === 0) return;
 
     const svg = d3.select(svgRef.current);
     svg.selectAll('*').remove(); // Clear previous content
 
-    const margin = { top: 20, right: 20, bottom: 20, left: 120 };
-    const width = 800 - margin.left - margin.right;
+    // Get the actual container width
+    const containerWidth = containerRef.current.clientWidth;
+    const margin = { top: 20, right: 10, bottom: 20, left: 120 };
+    const width = containerWidth - margin.left - margin.right;
     const height = timezones.length * 60;
 
     // Convert time range to each timezone
@@ -117,7 +120,7 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
         .attr('text-anchor', 'start')
         .attr('font-size', '11px')
         .attr('fill', '#1976d2')
-        .text(formatTimeInTimezone(localStart, d.id, 'HH:mm'));
+        .text(formatTimeInTimezone(localStart, d.id, 'h:mm a'));
 
       row.append('text')
         .attr('class', 'time-label')
@@ -126,7 +129,7 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
         .attr('text-anchor', 'end')
         .attr('font-size', '11px')
         .attr('fill', '#1976d2')
-        .text(formatTimeInTimezone(localEnd, d.id, 'HH:mm'));
+        .text(formatTimeInTimezone(localEnd, d.id, 'h:mm a'));
     });
 
   }, [timezones, timeRange]);
@@ -140,10 +143,10 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
   }
 
   return (
-    <div className="timezone-timeline">
+    <div ref={containerRef} className="timezone-timeline">
       <svg
         ref={svgRef}
-        width={800}
+        width="100%"
         height={timezones.length * 60 + 40}
       />
     </div>
