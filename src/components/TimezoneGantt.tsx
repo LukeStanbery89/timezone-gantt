@@ -1,69 +1,28 @@
 import { useState } from 'react';
-
-import { TimezoneDisplay, TimeRange } from '@/types';
-import { getUserTimezone, getAllTimezones } from '@/utils/timezoneUtils';
-import { useCurrentTime } from '@/hooks/useCurrentTime';
-import TimezoneSelector from './TimezoneSelector';
-import TimeRangeInput from './TimeRangeInput';
-import TimezoneTimeline from './TimezoneTimeline';
-
-import './TimezoneGantt.css';
+import { TimeRange } from '@/types';
+import { useTimezoneSelection } from '@/hooks/useTimezoneSelection';
+import { useTimeRange } from '@/hooks/useTimeRange';
+import { useTimezoneData } from '@/hooks/useTimezoneData';
+import TimezoneGanttView from './TimezoneGanttView';
 
 function TimezoneGantt() {
-  const currentTime = useCurrentTime();
-  const [selectedTimezones, setSelectedTimezones] = useState<TimezoneDisplay[]>([]);
   const [showOnlyBusinessTimezones, setShowOnlyBusinessTimezones] = useState(true);
-  const [timeRange, setTimeRange] = useState<TimeRange>(() => {
-    const userTimezone = getUserTimezone();
 
-    // Round current time up to nearest hour
-    const startTime = new Date(currentTime);
-    if (startTime.getMinutes() > 0) {
-      startTime.setHours(startTime.getHours() + 1, 0, 0, 0);
-    } else {
-      startTime.setMinutes(0, 0, 0);
-    }
-
-    // Set end time to start time + 1 hour
-    const endTime = new Date(startTime);
-    endTime.setHours(startTime.getHours() + 1);
-
-    return {
-      startDate: startTime,
-      endDate: endTime,
-      referenceTimezone: userTimezone.id,
-    };
-  });
-
-  // Initialize with user's timezone selected
-  useState(() => {
-    const userTimezone = getUserTimezone();
-    setSelectedTimezones([userTimezone]);
-  });
-
-
-
-  const handleTimezoneToggle = (timezone: TimezoneDisplay) => {
-    setSelectedTimezones(prev => {
-      const exists = prev.find(tz => tz.id === timezone.id);
-      if (exists) {
-        return prev.filter(tz => tz.id !== timezone.id);
-      } else {
-        return [...prev, timezone];
-      }
-    });
-  };
+  const timezoneData = useTimezoneData();
+  const availableTimezones = timezoneData.getAvailableTimezones(showOnlyBusinessTimezones);
+  const timezoneSelection = useTimezoneSelection(showOnlyBusinessTimezones);
+  const timeRangeHook = useTimeRange();
 
   const handleTimeRangeChange = (newTimeRange: TimeRange) => {
-    const referenceTimezoneChanged = newTimeRange.referenceTimezone !== timeRange.referenceTimezone;
+    const referenceTimezoneChanged = newTimeRange.referenceTimezone !== timeRangeHook.timeRange.referenceTimezone;
 
     if (referenceTimezoneChanged) {
       // Handle timezone selection logic when reference timezone changes
-      setSelectedTimezones(prev => {
+      timezoneSelection.setSelectedTimezones(prev => {
         let newSelected = [...prev];
 
         // Always unselect the old reference timezone
-        newSelected = newSelected.filter(tz => tz.id !== timeRange.referenceTimezone);
+        newSelected = newSelected.filter(tz => tz.id !== timeRangeHook.timeRange.referenceTimezone);
 
         // Always select the new reference timezone
         const referenceTimezone = availableTimezones.find(tz => tz.id === newTimeRange.referenceTimezone);
@@ -75,42 +34,20 @@ function TimezoneGantt() {
       });
     }
 
-    setTimeRange(newTimeRange);
+    timeRangeHook.handleTimeRangeChange(newTimeRange);
   };
 
-  const allTimezones = getAllTimezones();
-  const availableTimezones = showOnlyBusinessTimezones
-    ? allTimezones.filter(tz => tz.isBusiness)
-    : allTimezones;
-  const sortedTimezones = [...selectedTimezones].sort((a, b) => a.offset - b.offset);
-
   return (
-    <div className="timezone-gantt">
-      <div className="main-content">
-        <div className="sidebar">
-          <TimezoneSelector
-            availableTimezones={availableTimezones}
-            selectedTimezones={selectedTimezones}
-            onTimezoneToggle={handleTimezoneToggle}
-          />
-        </div>
-        <div className="main-panel">
-          <TimeRangeInput
-            value={timeRange}
-            referenceTimezones={availableTimezones}
-            onChange={handleTimeRangeChange}
-            showOnlyBusinessTimezones={showOnlyBusinessTimezones}
-            onShowOnlyBusinessTimezonesChange={setShowOnlyBusinessTimezones}
-          />
-          <div className="timeline-container">
-            <TimezoneTimeline
-              timezones={sortedTimezones}
-              timeRange={timeRange}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+    <TimezoneGanttView
+      selectedTimezones={timezoneSelection.selectedTimezones}
+      availableTimezones={availableTimezones}
+      sortedTimezones={timezoneSelection.sortedTimezones}
+      timeRange={timeRangeHook.timeRange}
+      showOnlyBusinessTimezones={showOnlyBusinessTimezones}
+      onTimezoneToggle={timezoneSelection.handleTimezoneToggle}
+      onTimeRangeChange={handleTimeRangeChange}
+      onShowOnlyBusinessTimezonesChange={setShowOnlyBusinessTimezones}
+    />
   );
 }
 
