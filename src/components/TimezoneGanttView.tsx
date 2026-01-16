@@ -4,8 +4,6 @@ import TimezoneSelector from './TimezoneSelector';
 import TimeRangeInput from './TimeRangeInput';
 import TimezoneTimeline from './TimezoneTimeline';
 
-import './TimezoneGantt.css';
-
 interface TimezoneGanttViewProps {
   selectedTimezones: TimezoneDisplay[];
   availableTimezones: TimezoneDisplay[];
@@ -28,9 +26,9 @@ function TimezoneGanttView({
   onShowOnlyBusinessTimezonesChange,
 }: TimezoneGanttViewProps) {
   return (
-    <div className="timezone-gantt">
-      <div className="main-content">
-        <aside className="sidebar" role="complementary" aria-label="Timezone selection">
+    <div className="max-w-[1400px] mx-auto p-5 font-sans">
+      <div className="flex gap-5 h-[calc(100vh-200px)] flex-col md:flex-row">
+        <aside className="w-[280px] flex-shrink-0 overflow-y-auto border border-gray-200 rounded-lg bg-white p-0 md:w-full md:max-h-[300px]" role="complementary" aria-label="Timezone selection">
           <TimezoneSelector
             availableTimezones={availableTimezones}
             selectedTimezones={selectedTimezones}
@@ -38,7 +36,7 @@ function TimezoneGanttView({
           />
         </aside>
 
-        <main className="main-panel" role="main" aria-label="Timeline visualization">
+        <main className="flex-1 flex flex-col gap-5" role="main" aria-label="Timeline visualization">
           <TimeRangeInput
             value={timeRange}
             referenceTimezones={availableTimezones}
@@ -48,7 +46,7 @@ function TimezoneGanttView({
           />
 
           <section
-            className="timeline-container"
+            className="flex-1 border border-gray-200 rounded-lg overflow-hidden bg-white min-h-[400px] flex flex-col"
             aria-label="Timezone timeline visualization"
             aria-live="polite"
             aria-atomic="true"
