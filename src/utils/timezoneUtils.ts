@@ -16,21 +16,10 @@ export function getUserTimezone(): TimezoneDisplay {
 }
 
 /**
- * Get a human-readable name for a timezone
+ * Get the IANA timezone identifier for display
  */
 export function getTimezoneDisplayName(timezoneId: string): string {
-  try {
-    const now = new Date();
-    const formatter = new Intl.DateTimeFormat('en-US', {
-      timeZone: timezoneId,
-      timeZoneName: 'long',
-    });
-    const parts = formatter.formatToParts(now);
-    const timeZoneName = parts.find(part => part.type === 'timeZoneName')?.value;
-    return timeZoneName || timezoneId;
-  } catch {
-    return timezoneId;
-  }
+  return timezoneId;
 }
 
 /**
@@ -49,8 +38,8 @@ export function getTimezoneAbbreviation(timezoneId: string): string {
  * Get all available timezones, with business timezones marked
  */
 export function getAllTimezones(): TimezoneDisplay[] {
-  // Common business timezones (major cities, financial centers)
-  const businessTimezoneIds = [
+  // Common business timezones (major cities, financial centers) - these will be marked as business zones
+  const businessTimezoneIds = new Set([
     'America/New_York',     // Eastern Time - major US business hub
     'America/Chicago',      // Central Time - Chicago financial markets
     'America/Denver',       // Mountain Time
@@ -69,9 +58,9 @@ export function getAllTimezones(): TimezoneDisplay[] {
     'Asia/Kolkata',         // IST - Mumbai financial markets
     'Australia/Sydney',     // AEST/AEDT - Sydney financial markets
     'Pacific/Auckland',     // NZST/NZDT - Auckland business hub
-  ];
+  ]);
 
-  // Additional comprehensive timezone list (organized by region)
+  // Comprehensive timezone list (organized by region) - includes business zones
   const allTimezoneIds = [
     // North America
     'America/New_York',
@@ -85,7 +74,6 @@ export function getAllTimezones(): TimezoneDisplay[] {
     'America/Buenos_Aires',
     'America/Halifax',
     'America/Anchorage',
-    'America/Honolulu',
 
     // Europe
     'Europe/London',
@@ -154,7 +142,7 @@ export function getAllTimezones(): TimezoneDisplay[] {
     name: getTimezoneDisplayName(id),
     offset: getTimezoneOffset(id),
     abbreviation: getTimezoneAbbreviation(id),
-    isBusiness: businessTimezoneIds.includes(id),
+    isBusiness: businessTimezoneIds.has(id),
   }));
 }
 
