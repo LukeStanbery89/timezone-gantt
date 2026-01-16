@@ -137,13 +137,21 @@ export function getAllTimezones(): TimezoneDisplay[] {
   // Remove duplicates and create timezone objects
   const uniqueTimezoneIds = [...new Set(allTimezoneIds)];
 
-  return uniqueTimezoneIds.map(id => ({
+  const timezones = uniqueTimezoneIds.map(id => ({
     id,
     name: getTimezoneDisplayName(id),
     offset: getTimezoneOffset(id),
     abbreviation: getTimezoneAbbreviation(id),
     isBusiness: businessTimezoneIds.has(id),
   }));
+
+  // Sort by UTC offset (ascending), then by name for same offset
+  return timezones.sort((a, b) => {
+    if (a.offset !== b.offset) {
+      return a.offset - b.offset; // Sort by offset ascending
+    }
+    return a.name.localeCompare(b.name); // Sort by name for same offset
+  });
 }
 
 /**
