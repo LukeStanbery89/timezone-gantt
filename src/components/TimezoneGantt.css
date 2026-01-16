@@ -299,6 +299,8 @@
   overflow: hidden;
   background: white;
   min-height: 400px;
+  display: flex;
+  flex-direction: column;
 }
 
 .empty-timeline {
@@ -312,7 +314,7 @@
   padding: 20px 0;
   height: 100%;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
 .timezone-timeline > div {
