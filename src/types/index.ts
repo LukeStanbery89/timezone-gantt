@@ -4,6 +4,7 @@ export interface TimezoneDisplay {
   offset: number;       // Offset from UTC in minutes
   abbreviation: string; // Current abbreviation (e.g., "EST", "EDT")
   isSelected?: boolean; // Whether this timezone is currently selected
+  isBusiness?: boolean; // Whether this is a common business timezone
 }
 
 export interface GanttTask {

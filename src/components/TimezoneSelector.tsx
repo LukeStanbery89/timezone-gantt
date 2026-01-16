@@ -25,13 +25,12 @@ function TimezoneSelector({
                 checked={isSelected}
                 onChange={() => onTimezoneToggle(timezone)}
               />
-              <div className="timezone-info">
-                <span className="timezone-name">{timezone.name}</span>
-                <span className="timezone-abbrev">({timezone.abbreviation})</span>
-                <span className="timezone-offset">
-                  UTC{timezone.offset >= 0 ? '+' : ''}{timezone.offset / 60}
-                </span>
-              </div>
+               <div className="timezone-info">
+                 <span className={`timezone-name ${timezone.isBusiness ? 'business-timezone' : ''}`}>{timezone.name}</span>
+                 <span className="timezone-details">
+                   ({timezone.abbreviation}) UTC{timezone.offset >= 0 ? '+' : ''}{Math.round(timezone.offset / 60)}
+                 </span>
+               </div>
             </label>
           );
         })}

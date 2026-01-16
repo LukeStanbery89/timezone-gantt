@@ -46,30 +46,123 @@ export function getTimezoneAbbreviation(timezoneId: string): string {
 }
 
 /**
- * Get a list of popular timezones
+ * Get all available timezones, with business timezones marked
  */
-export function getPopularTimezones(): TimezoneDisplay[] {
-  const timezones = [
-    'America/New_York',     // Eastern Time
-    'America/Chicago',      // Central Time
+export function getAllTimezones(): TimezoneDisplay[] {
+  // Common business timezones (major cities, financial centers)
+  const businessTimezoneIds = [
+    'America/New_York',     // Eastern Time - major US business hub
+    'America/Chicago',      // Central Time - Chicago financial markets
     'America/Denver',       // Mountain Time
-    'America/Los_Angeles',  // Pacific Time
-    'Europe/London',        // GMT/BST
-    'Europe/Paris',         // CET/CEST
-    'Europe/Berlin',        // CET/CEST
-    'Asia/Tokyo',           // JST
-    'Asia/Shanghai',        // CST
-    'Asia/Kolkata',         // IST
-    'Australia/Sydney',     // AEST/AEDT
-    'Pacific/Auckland',     // NZST/NZDT
+    'America/Los_Angeles',  // Pacific Time - Silicon Valley, Hollywood
+    'America/Toronto',      // Toronto business hub
+    'America/Vancouver',    // Vancouver business hub
+    'Europe/London',        // GMT/BST - London financial markets
+    'Europe/Paris',         // CET/CEST - Paris business hub
+    'Europe/Berlin',        // CET/CEST - Berlin business hub
+    'Europe/Zurich',        // Zurich financial center
+    'Europe/Amsterdam',     // Amsterdam financial center
+    'Asia/Tokyo',           // JST - Tokyo stock exchange
+    'Asia/Shanghai',        // CST - Shanghai financial markets
+    'Asia/Hong_Kong',       // Hong Kong financial markets
+    'Asia/Singapore',       // Singapore financial hub
+    'Asia/Kolkata',         // IST - Mumbai financial markets
+    'Australia/Sydney',     // AEST/AEDT - Sydney financial markets
+    'Pacific/Auckland',     // NZST/NZDT - Auckland business hub
   ];
 
-  return timezones.map(id => ({
+  // Additional comprehensive timezone list (organized by region)
+  const allTimezoneIds = [
+    // North America
+    'America/New_York',
+    'America/Chicago',
+    'America/Denver',
+    'America/Los_Angeles',
+    'America/Toronto',
+    'America/Vancouver',
+    'America/Mexico_City',
+    'America/Sao_Paulo',
+    'America/Buenos_Aires',
+    'America/Halifax',
+    'America/Anchorage',
+    'America/Honolulu',
+
+    // Europe
+    'Europe/London',
+    'Europe/Paris',
+    'Europe/Berlin',
+    'Europe/Rome',
+    'Europe/Madrid',
+    'Europe/Amsterdam',
+    'Europe/Zurich',
+    'Europe/Stockholm',
+    'Europe/Moscow',
+    'Europe/Istanbul',
+    'Europe/Athens',
+    'Europe/Dublin',
+    'Europe/Prague',
+    'Europe/Vienna',
+
+    // Asia
+    'Asia/Tokyo',
+    'Asia/Shanghai',
+    'Asia/Hong_Kong',
+    'Asia/Singapore',
+    'Asia/Kolkata',
+    'Asia/Dubai',
+    'Asia/Seoul',
+    'Asia/Bangkok',
+    'Asia/Manila',
+    'Asia/Kuala_Lumpur',
+    'Asia/Jakarta',
+    'Asia/Karachi',
+    'Asia/Taipei',
+    'Asia/Tehran',
+    'Asia/Jerusalem',
+
+    // Oceania
+    'Australia/Sydney',
+    'Australia/Melbourne',
+    'Australia/Perth',
+    'Australia/Brisbane',
+    'Pacific/Auckland',
+    'Pacific/Honolulu',
+
+    // Africa
+    'Africa/Cairo',
+    'Africa/Johannesburg',
+    'Africa/Lagos',
+    'Africa/Nairobi',
+    'Africa/Casablanca',
+
+    // South America
+    'America/Santiago',
+    'America/Lima',
+    'America/Bogota',
+    'America/Caracas',
+
+    // UTC and special
+    'UTC',
+    'GMT',
+  ];
+
+  // Remove duplicates and create timezone objects
+  const uniqueTimezoneIds = [...new Set(allTimezoneIds)];
+
+  return uniqueTimezoneIds.map(id => ({
     id,
     name: getTimezoneDisplayName(id),
     offset: getTimezoneOffset(id),
     abbreviation: getTimezoneAbbreviation(id),
+    isBusiness: businessTimezoneIds.includes(id),
   }));
+}
+
+/**
+ * Get a list of popular timezones (legacy function for backward compatibility)
+ */
+export function getPopularTimezones(): TimezoneDisplay[] {
+  return getAllTimezones().filter(tz => tz.isBusiness);
 }
 
 /**

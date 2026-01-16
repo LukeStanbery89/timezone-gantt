@@ -78,15 +78,14 @@
   font-size: 0.9rem;
 }
 
-.timezone-abbrev {
-  color: #666;
-  font-size: 0.8rem;
+.timezone-name.business-timezone {
+  font-weight: 700;
 }
 
-.timezone-offset {
-  color: #888;
-  font-size: 0.75rem;
-  font-weight: 500;
+.timezone-details {
+  color: #666;
+  font-size: 0.8rem;
+  margin-top: 1px;
 }
 
 .time-range-input {

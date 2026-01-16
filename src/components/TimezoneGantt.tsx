@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { TimezoneDisplay, TimeRange } from '@/types';
-import { getUserTimezone, getPopularTimezones } from '@/utils/timezoneUtils';
+import { getUserTimezone, getAllTimezones } from '@/utils/timezoneUtils';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
 import TimezoneSelector from './TimezoneSelector';
 import TimeRangeInput from './TimeRangeInput';
@@ -49,7 +49,7 @@ function TimezoneGantt() {
     setTimeRange(newTimeRange);
   };
 
-  const availableTimezones = getPopularTimezones();
+  const availableTimezones = getAllTimezones();
   const sortedTimezones = [...selectedTimezones].sort((a, b) => a.offset - b.offset);
 
   return (
