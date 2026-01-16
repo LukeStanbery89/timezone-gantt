@@ -1,0 +1,293 @@
+.timezone-gantt {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.timezone-gantt header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.timezone-gantt h1 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.timezone-gantt p {
+  margin: 0;
+  color: #666;
+}
+
+.main-content {
+  display: flex;
+  gap: 20px;
+  height: calc(100vh - 200px);
+}
+
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  padding: 0;
+}
+
+.main-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.timezone-selector h3 {
+  margin: 15px 15px 15px 15px;
+  color: #333;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+.timezone-grid {
+  padding: 0 15px 15px 15px;
+}
+
+.timezone-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 8px;
+}
+
+.timezone-option:hover {
+  background: #f0f0f0;
+}
+
+.timezone-option input[type="checkbox"] {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.timezone-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.timezone-name {
+  font-weight: 500;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.timezone-abbrev {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.timezone-offset {
+  color: #888;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.time-range-input {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  padding: 20px;
+}
+
+.time-range-input h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+.reference-timezone {
+  margin-bottom: 20px;
+}
+
+.reference-timezone label {
+  display: block;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.reference-timezone select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background: white;
+}
+
+.time-range-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.time-input-group h4 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-size: 1rem;
+}
+
+.input-row {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.date-input,
+.time-input {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.date-input label,
+.time-input label {
+  font-weight: 500;
+  color: #555;
+  font-size: 0.85rem;
+}
+
+.date-input input,
+.time-input input {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.date-input input {
+  width: 130px;
+}
+
+.time-input input {
+  width: 100px;
+}
+
+.timeline-container {
+  flex: 1;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  min-height: 400px;
+}
+
+.empty-timeline {
+  padding: 40px;
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.timezone-timeline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.timezone-timeline svg {
+  flex-shrink: 0;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+}
+
+.timezone-timeline .timezone-label {
+  font-weight: 500;
+  fill: #333;
+  font-size: 12px;
+}
+
+.timezone-timeline .time-range-bar {
+  cursor: pointer;
+  transition: fill-opacity 0.2s;
+}
+
+.timezone-timeline .time-range-bar:hover {
+  fill-opacity: 1 !important;
+}
+
+.timezone-timeline .time-label {
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.timezone-timeline .x-axis path,
+.timezone-timeline .x-axis line {
+  stroke: #ddd;
+}
+
+.timezone-timeline .x-axis text {
+  fill: #666;
+  font-size: 11px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .timezone-gantt {
+    padding: 15px;
+  }
+
+  .main-content {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    max-height: 300px;
+  }
+
+  .main-panel {
+    flex-direction: column;
+  }
+
+  .time-range-input {
+    order: -1; /* Show time input above timeline on mobile */
+  }
+
+  .input-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .date-input input,
+  .time-input input {
+    width: 100%;
+  }
+
+  .timezone-timeline {
+    padding: 10px;
+    overflow-x: auto;
+  }
+
+  .timezone-timeline svg {
+    min-width: 600px;
+  }
+}
