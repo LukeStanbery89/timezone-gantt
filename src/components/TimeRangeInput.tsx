@@ -19,7 +19,12 @@ function TimeRangeInput({ value, referenceTimezones, onChange }: TimeRangeInputP
   };
 
   const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const [hours, minutes] = e.target.value.split(':').map(Number);
+    const timeValue = e.target.value;
+    if (!timeValue || !timeValue.includes(':')) return;
+
+    const [hours, minutes] = timeValue.split(':').map(Number);
+    if (isNaN(hours) || isNaN(minutes) || hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return;
+
     const newStartDate = new Date(value.startDate);
     newStartDate.setHours(hours, minutes, 0, 0);
     onChange({ ...value, startDate: newStartDate });
@@ -36,7 +41,12 @@ function TimeRangeInput({ value, referenceTimezones, onChange }: TimeRangeInputP
   };
 
   const handleEndTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const [hours, minutes] = e.target.value.split(':').map(Number);
+    const timeValue = e.target.value;
+    if (!timeValue || !timeValue.includes(':')) return;
+
+    const [hours, minutes] = timeValue.split(':').map(Number);
+    if (isNaN(hours) || isNaN(minutes) || hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return;
+
     const newEndDate = new Date(value.endDate);
     newEndDate.setHours(hours, minutes, 0, 0);
     onChange({ ...value, endDate: newEndDate });
