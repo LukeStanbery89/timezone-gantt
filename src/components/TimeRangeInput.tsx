@@ -58,67 +58,69 @@ function TimeRangeInput({ value, referenceTimezones, onChange }: TimeRangeInputP
     <div className="time-range-input">
       <h3>Time Range</h3>
 
-      <div className="reference-timezone">
-        <label htmlFor="reference-timezone">Reference Timezone:</label>
-        <select
-          id="reference-timezone"
-          value={value.referenceTimezone}
-          onChange={handleReferenceTimezoneChange}
-        >
-          {referenceTimezones.map(timezone => (
-            <option key={timezone.id} value={timezone.id}>
-              {timezone.name} ({timezone.abbreviation})
-            </option>
-          ))}
-        </select>
-      </div>
-
       <div className="time-range-controls">
-        <div className="time-input-group">
-          <h4>Start Time</h4>
-          <div className="input-row">
-            <div className="date-input">
-              <label htmlFor="start-date">Date:</label>
-              <input
-                id="start-date"
-                type="date"
-                value={formatDateForInput(value.startDate)}
-                onChange={handleStartDateChange}
-              />
-            </div>
-            <div className="time-input">
-              <label htmlFor="start-time">Time:</label>
-              <input
-                id="start-time"
-                type="time"
-                value={formatTimeForInput(value.startDate)}
-                onChange={handleStartTimeChange}
-              />
+        <div className="time-range-row">
+          <div className="time-input-group">
+            <h4>Start Time</h4>
+            <div className="input-row">
+              <div className="date-input">
+                <label htmlFor="start-date">Date:</label>
+                <input
+                  id="start-date"
+                  type="date"
+                  value={formatDateForInput(value.startDate)}
+                  onChange={handleStartDateChange}
+                />
+              </div>
+              <div className="time-input">
+                <label htmlFor="start-time">Time:</label>
+                <input
+                  id="start-time"
+                  type="time"
+                  value={formatTimeForInput(value.startDate)}
+                  onChange={handleStartTimeChange}
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="time-input-group">
-          <h4>End Time</h4>
-          <div className="input-row">
-            <div className="date-input">
-              <label htmlFor="end-date">Date:</label>
-              <input
-                id="end-date"
-                type="date"
-                value={formatDateForInput(value.endDate)}
-                onChange={handleEndDateChange}
-              />
+          <div className="time-input-group">
+            <h4>End Time</h4>
+            <div className="input-row">
+              <div className="date-input">
+                <label htmlFor="end-date">Date:</label>
+                <input
+                  id="end-date"
+                  type="date"
+                  value={formatDateForInput(value.endDate)}
+                  onChange={handleEndDateChange}
+                />
+              </div>
+              <div className="time-input">
+                <label htmlFor="end-time">Time:</label>
+                <input
+                  id="end-time"
+                  type="time"
+                  value={formatTimeForInput(value.endDate)}
+                  onChange={handleEndTimeChange}
+                />
+              </div>
             </div>
-            <div className="time-input">
-              <label htmlFor="end-time">Time:</label>
-              <input
-                id="end-time"
-                type="time"
-                value={formatTimeForInput(value.endDate)}
-                onChange={handleEndTimeChange}
-              />
-            </div>
+          </div>
+
+          <div className="reference-timezone">
+            <label htmlFor="reference-timezone">Reference Timezone:</label>
+            <select
+              id="reference-timezone"
+              value={value.referenceTimezone}
+              onChange={handleReferenceTimezoneChange}
+            >
+              {referenceTimezones.map(timezone => (
+                <option key={timezone.id} value={timezone.id}>
+                  {timezone.name} ({timezone.abbreviation})
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>

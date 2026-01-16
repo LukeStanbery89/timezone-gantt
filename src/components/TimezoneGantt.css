@@ -105,7 +105,8 @@
 }
 
 .reference-timezone {
-  margin-bottom: 20px;
+  flex: 1;
+  min-width: 200px;
 }
 
 .reference-timezone label {
@@ -113,6 +114,7 @@
   font-weight: 500;
   color: #555;
   margin-bottom: 8px;
+  font-size: 0.85rem;
 }
 
 .reference-timezone select {
@@ -128,6 +130,11 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.time-range-row {
+  display: flex;
+  gap: 30px;
 }
 
 .time-input-group h4 {
@@ -256,6 +263,20 @@
 
   .time-range-input {
     order: -1; /* Show time input above timeline on mobile */
+  }
+
+  .time-range-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .time-range-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .reference-timezone {
+    width: 100%;
   }
 
   .input-row {
