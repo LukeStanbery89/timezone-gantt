@@ -24,8 +24,8 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
 
     // Get the actual container width
     const containerWidth = containerRef.current.clientWidth;
-    const margin = { top: 20, right: 10, bottom: 20, left: 120 };
-    const width = containerWidth - margin.left - margin.right;
+    const margin = { top: 20, right: 20, bottom: 20, left: 160 };
+    const width = Math.max(containerWidth - margin.left - margin.right, 600); // Minimum width for readability
     const height = timezones.length * 60;
 
     // Convert time range to each timezone
@@ -148,6 +148,7 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
         ref={svgRef}
         width="100%"
         height={timezones.length * 60 + 40}
+        style={{ minWidth: '800px' }}
       />
     </div>
   );
