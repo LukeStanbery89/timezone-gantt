@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TimeRange, TimezoneDisplay } from '@/types';
+import Modal from './Modal';
 
 interface TimeRangeInputProps {
   value: TimeRange;
@@ -8,6 +9,7 @@ interface TimeRangeInputProps {
 }
 
 function TimeRangeInput({ value, referenceTimezones, onChange }: TimeRangeInputProps) {
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = new Date(e.target.value);
     if (!isNaN(date.getTime())) {
@@ -66,7 +68,16 @@ function TimeRangeInput({ value, referenceTimezones, onChange }: TimeRangeInputP
 
   return (
     <div className="time-range-input">
-      <h3>Time Range</h3>
+      <div className="time-range-header">
+        <h3>Time Range</h3>
+        <button
+          className="settings-button"
+          onClick={() => setIsSettingsModalOpen(true)}
+          aria-label="Settings"
+        >
+          ⚙️
+        </button>
+      </div>
 
       <div className="time-range-controls">
         <div className="time-range-row">
@@ -134,6 +145,17 @@ function TimeRangeInput({ value, referenceTimezones, onChange }: TimeRangeInputP
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={isSettingsModalOpen}
+        onClose={() => setIsSettingsModalOpen(false)}
+        title="Settings"
+      >
+        <div>
+          <p>Application settings will be implemented here.</p>
+          <p>This modal can contain various configuration options for the timezone gantt chart.</p>
+        </div>
+      </Modal>
     </div>
   );
 }
