@@ -6,9 +6,17 @@ interface TimeRangeInputProps {
   value: TimeRange;
   referenceTimezones: TimezoneDisplay[];
   onChange: (value: TimeRange) => void;
+  showOnlyBusinessTimezones: boolean;
+  onShowOnlyBusinessTimezonesChange: (enabled: boolean) => void;
 }
 
-function TimeRangeInput({ value, referenceTimezones, onChange }: TimeRangeInputProps) {
+function TimeRangeInput({
+  value,
+  referenceTimezones,
+  onChange,
+  showOnlyBusinessTimezones,
+  onShowOnlyBusinessTimezonesChange
+}: TimeRangeInputProps) {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = new Date(e.target.value);
@@ -154,7 +162,14 @@ function TimeRangeInput({ value, referenceTimezones, onChange }: TimeRangeInputP
           </div>
 
           <div className="setting-group">
-            <p>Additional settings will be implemented here in the future.</p>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={showOnlyBusinessTimezones}
+                onChange={(e) => onShowOnlyBusinessTimezonesChange(e.target.checked)}
+              />
+              Show only common business timezones
+            </label>
           </div>
         </div>
       </Modal>

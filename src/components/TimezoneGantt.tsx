@@ -12,6 +12,7 @@ import './TimezoneGantt.css';
 function TimezoneGantt() {
   const currentTime = useCurrentTime();
   const [selectedTimezones, setSelectedTimezones] = useState<TimezoneDisplay[]>([]);
+  const [showOnlyBusinessTimezones, setShowOnlyBusinessTimezones] = useState(true);
   const [timeRange, setTimeRange] = useState<TimeRange>(() => {
     const userTimezone = getUserTimezone();
 
@@ -77,7 +78,10 @@ function TimezoneGantt() {
     setTimeRange(newTimeRange);
   };
 
-  const availableTimezones = getAllTimezones();
+  const allTimezones = getAllTimezones();
+  const availableTimezones = showOnlyBusinessTimezones
+    ? allTimezones.filter(tz => tz.isBusiness)
+    : allTimezones;
   const sortedTimezones = [...selectedTimezones].sort((a, b) => a.offset - b.offset);
 
   return (
@@ -95,6 +99,8 @@ function TimezoneGantt() {
             value={timeRange}
             referenceTimezones={availableTimezones}
             onChange={handleTimeRangeChange}
+            showOnlyBusinessTimezones={showOnlyBusinessTimezones}
+            onShowOnlyBusinessTimezonesChange={setShowOnlyBusinessTimezones}
           />
           <div className="timeline-container">
             <TimezoneTimeline
