@@ -128,21 +128,6 @@ function TimeRangeInput({ value, referenceTimezones, onChange }: TimeRangeInputP
               </div>
             </div>
           </div>
-
-          <div className="reference-timezone">
-            <label htmlFor="reference-timezone">Reference Timezone:</label>
-            <select
-              id="reference-timezone"
-              value={value.referenceTimezone}
-              onChange={handleReferenceTimezoneChange}
-            >
-              {referenceTimezones.map(timezone => (
-                <option key={timezone.id} value={timezone.id}>
-                  {timezone.name} ({timezone.abbreviation})
-                </option>
-              ))}
-            </select>
-          </div>
         </div>
       </div>
 
@@ -151,9 +136,26 @@ function TimeRangeInput({ value, referenceTimezones, onChange }: TimeRangeInputP
         onClose={() => setIsSettingsModalOpen(false)}
         title="Settings"
       >
-        <div>
-          <p>Application settings will be implemented here.</p>
-          <p>This modal can contain various configuration options for the timezone gantt chart.</p>
+        <div className="settings-content">
+          <div className="setting-group">
+            <label htmlFor="modal-reference-timezone">My Timezone:</label>
+            <select
+              id="modal-reference-timezone"
+              value={value.referenceTimezone}
+              onChange={handleReferenceTimezoneChange}
+              className="timezone-select"
+            >
+              {referenceTimezones.map(timezone => (
+                <option key={timezone.id} value={timezone.id}>
+                  {timezone.name} ({timezone.abbreviation})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="setting-group">
+            <p>Additional settings will be implemented here in the future.</p>
+          </div>
         </div>
       </Modal>
     </div>

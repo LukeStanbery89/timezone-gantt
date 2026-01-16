@@ -54,6 +54,26 @@ function TimezoneGantt() {
   };
 
   const handleTimeRangeChange = (newTimeRange: TimeRange) => {
+    const referenceTimezoneChanged = newTimeRange.referenceTimezone !== timeRange.referenceTimezone;
+
+    if (referenceTimezoneChanged) {
+      // Handle timezone selection logic when reference timezone changes
+      setSelectedTimezones(prev => {
+        let newSelected = [...prev];
+
+        // Always unselect the old reference timezone
+        newSelected = newSelected.filter(tz => tz.id !== timeRange.referenceTimezone);
+
+        // Always select the new reference timezone
+        const referenceTimezone = availableTimezones.find(tz => tz.id === newTimeRange.referenceTimezone);
+        if (referenceTimezone && !newSelected.some(tz => tz.id === newTimeRange.referenceTimezone)) {
+          newSelected.push(referenceTimezone);
+        }
+
+        return newSelected;
+      });
+    }
+
     setTimeRange(newTimeRange);
   };
 
