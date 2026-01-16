@@ -22,10 +22,9 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
     const svg = d3.select(svgRef.current);
     svg.selectAll('*').remove(); // Clear previous content
 
-    // Get the actual container width
-    const containerWidth = containerRef.current.clientWidth;
-    const margin = { top: 20, right: 20, bottom: 20, left: 160 };
-    const width = Math.max(containerWidth - margin.left - margin.right, 600); // Minimum width for readability
+    // Calculate dimensions for proper scrolling and label visibility
+    const margin = { top: 20, right: 30, bottom: 20, left: 180 };
+    const width = 1000; // Fixed width to ensure scrolling works properly
     const height = timezones.length * 60;
 
     // Convert time range to each timezone
@@ -82,10 +81,11 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
     // Add timezone labels
     rows.append('text')
       .attr('class', 'timezone-label')
-      .attr('x', -10)
+      .attr('x', -15)
       .attr('y', yScale.bandwidth() / 2)
       .attr('dy', '0.35em')
       .attr('text-anchor', 'end')
+      .style('font-size', '13px')
       .text((d: TimezoneDisplay) => `${d.name} (${d.abbreviation})`);
 
     // Add time range bars for each timezone
@@ -146,9 +146,8 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
     <div ref={containerRef} className="timezone-timeline">
       <svg
         ref={svgRef}
-        width="100%"
+        width={1020}
         height={timezones.length * 60 + 40}
-        style={{ minWidth: '800px' }}
       />
     </div>
   );

@@ -196,18 +196,16 @@
 }
 
 .timezone-timeline {
-  padding: 20px 5px;
+  padding: 20px 0;
   height: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  display: flex;
 }
 
 .timezone-timeline svg {
-  flex-shrink: 0;
   border: 1px solid #f0f0f0;
   border-radius: 4px;
-  min-width: 800px;
+  display: block;
 }
 
 .timezone-timeline .timezone-label {
@@ -290,7 +288,7 @@
   }
 
   .timezone-timeline {
-    padding: 10px 5px;
+    padding: 10px 0;
     overflow-x: auto;
   }
 
