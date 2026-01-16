@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useMemo } from 'react';
 
 interface ValidatedInputProps {
   label: string;
@@ -24,7 +24,8 @@ function ValidatedInput({
   const [error, setError] = useState<string | null>(null);
   const [touched, setTouched] = useState(false);
 
-  const validate = useCallback((val: string) => {
+  // Memoize the validation function to prevent unnecessary recalculations
+  const validate = useMemo(() => (val: string) => {
     if (validator) {
       const validationError = validator(val);
       setError(validationError);
@@ -32,6 +33,9 @@ function ValidatedInput({
     }
     return true;
   }, [validator]);
+
+  // Memoize the error ID to prevent unnecessary recalculations
+  const errorId = useMemo(() => `error-${label.toLowerCase().replace(' ', '-')}`, [label]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
@@ -62,11 +66,11 @@ function ValidatedInput({
         required={required}
         disabled={disabled}
         aria-invalid={error ? 'true' : 'false'}
-        aria-describedby={error ? `error-${label.toLowerCase().replace(' ', '-')}` : undefined}
+        aria-describedby={error ? errorId : undefined}
       />
       {error && (
         <div
-          id={`error-${label.toLowerCase().replace(' ', '-')}`}
+          id={errorId}
           className="error-message"
           role="alert"
         >

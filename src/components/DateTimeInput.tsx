@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { formatDateForInput, formatTimeForInput, parseTimeInput, combineDateAndTime } from '@/utils/dateTimeUtils';
 
 interface DateTimeInputProps {
@@ -10,23 +10,20 @@ interface DateTimeInputProps {
 }
 
 function DateTimeInput({ label, date, onDateChange, timezoneId, error }: DateTimeInputProps) {
-  const [dateValue, setDateValue] = useState(formatDateForInput(date));
-  const [timeValue, setTimeValue] = useState(formatTimeForInput(date));
+  // Memoize formatted values to prevent unnecessary recalculations
+  const dateValue = useMemo(() => formatDateForInput(date), [date]);
+  const timeValue = useMemo(() => formatTimeForInput(date), [date]);
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDateChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const newDateValue = e.target.value;
-    setDateValue(newDateValue);
-
     const combined = combineDateAndTime(newDateValue, timeValue);
     if (combined) {
       onDateChange(combined);
     }
-  };
+  }, [timeValue, onDateChange]);
 
-  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTimeChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const newTimeValue = e.target.value;
-    setTimeValue(newTimeValue);
-
     const time = parseTimeInput(newTimeValue);
     if (time) {
       const combined = combineDateAndTime(dateValue, newTimeValue);
@@ -34,7 +31,7 @@ function DateTimeInput({ label, date, onDateChange, timezoneId, error }: DateTim
         onDateChange(combined);
       }
     }
-  };
+  }, [dateValue, onDateChange]);
 
   return (
     <div className="datetime-input">

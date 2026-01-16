@@ -8,38 +8,12 @@ import { Bar } from 'react-chartjs-2';
 import { TimezoneDisplay } from '@/types';
 import { transformTimezoneDataForChart, formatTimeInTimezone } from '@/utils/timezoneUtils';
 
-interface TimezoneTimelineProps {
-  timezones: TimezoneDisplay[];
-  timeRange: {
-    startDate: Date;
-    endDate: Date;
-    referenceTimezone: string;
-  };
-}
-
-function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
-  const chartData = useMemo(() => {
-    if (timezones.length === 0) return null;
-
-    const transformedData = transformTimezoneDataForChart(timezones, timeRange);
-
-    const data: ChartData<'bar'> = {
-      labels: transformedData.labels,
-      datasets: [{
-        label: 'Time Range',
-        data: transformedData.data,
-        backgroundColor: 'rgba(33, 150, 243, 0.7)',
-        borderColor: 'rgba(25, 118, 210, 1)',
-        borderWidth: 1,
-        borderRadius: 4,
-        barThickness: 20,
-      }]
-    };
-
-    return { data, timeRange: transformedData.timeRange };
-  }, [timezones, timeRange]);
-
-  const timeLabelsPlugin: Plugin<'bar'> = useMemo(() => ({
+/**
+ * Custom hook to create the time labels plugin for Chart.js
+ * Memoized to prevent recreation on every render
+ */
+const useTimeLabelsPlugin = (timezones: TimezoneDisplay[]): Plugin<'bar'> => {
+  return useMemo(() => ({
     id: 'timeLabels',
     afterDraw: (chart) => {
       const { ctx, data, scales } = chart;
@@ -82,6 +56,40 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
       ctx.restore();
     }
   }), [timezones]);
+};
+
+interface TimezoneTimelineProps {
+  timezones: TimezoneDisplay[];
+  timeRange: {
+    startDate: Date;
+    endDate: Date;
+    referenceTimezone: string;
+  };
+}
+
+function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
+  const chartData = useMemo(() => {
+    if (timezones.length === 0) return null;
+
+    const transformedData = transformTimezoneDataForChart(timezones, timeRange);
+
+    const data: ChartData<'bar'> = {
+      labels: transformedData.labels,
+      datasets: [{
+        label: 'Time Range',
+        data: transformedData.data,
+        backgroundColor: 'rgba(33, 150, 243, 0.7)',
+        borderColor: 'rgba(25, 118, 210, 1)',
+        borderWidth: 1,
+        borderRadius: 4,
+        barThickness: 20,
+      }]
+    };
+
+    return { data, timeRange: transformedData.timeRange };
+  }, [timezones, timeRange]);
+
+  const timeLabelsPlugin = useTimeLabelsPlugin(timezones);
 
   const options: ChartOptions<'bar'> = useMemo(() => ({
     indexAxis: 'y' as const,

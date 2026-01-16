@@ -8,11 +8,14 @@ import { getAllTimezones } from '@/utils/timezoneUtils';
 export function useTimezoneData() {
   const allTimezones = useMemo(() => getAllTimezones(), []);
 
-  const getAvailableTimezones = (showOnlyBusinessTimezones: boolean): TimezoneDisplay[] => {
-    return showOnlyBusinessTimezones
-      ? allTimezones.filter(tz => tz.isBusiness)
-      : allTimezones;
-  };
+  const getAvailableTimezones = useMemo(() =>
+    (showOnlyBusinessTimezones: boolean): TimezoneDisplay[] => {
+      return showOnlyBusinessTimezones
+        ? allTimezones.filter(tz => tz.isBusiness)
+        : allTimezones;
+    },
+    [allTimezones]
+  );
 
   return {
     allTimezones,

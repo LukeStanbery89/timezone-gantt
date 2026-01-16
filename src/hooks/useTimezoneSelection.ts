@@ -24,16 +24,19 @@ export function useTimezoneSelection(showOnlyBusinessTimezones: boolean) {
     }
   }, [allTimezones, selectedTimezones.length]);
 
-  const handleTimezoneToggle = (timezone: TimezoneDisplay) => {
-    setSelectedTimezones(prev => {
-      const exists = prev.find(tz => tz.id === timezone.id);
-      if (exists) {
-        return prev.filter(tz => tz.id !== timezone.id);
-      } else {
-        return [...prev, timezone];
-      }
-    });
-  };
+  const handleTimezoneToggle = useMemo(() =>
+    (timezone: TimezoneDisplay) => {
+      setSelectedTimezones(prev => {
+        const exists = prev.find(tz => tz.id === timezone.id);
+        if (exists) {
+          return prev.filter(tz => tz.id !== timezone.id);
+        } else {
+          return [...prev, timezone];
+        }
+      });
+    },
+    []
+  );
 
   const sortedTimezones = useMemo(() =>
     [...selectedTimezones].sort((a, b) => a.offset - b.offset),
