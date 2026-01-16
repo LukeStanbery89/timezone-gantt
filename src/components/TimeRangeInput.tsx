@@ -75,11 +75,11 @@ function TimeRangeInput({
   };
 
   return (
-    <div className="time-range-input">
-      <div className="time-range-header">
-        <h3>Time Range</h3>
+    <div className="border border-gray-200 rounded-lg bg-white p-5">
+      <div className="flex justify-between items-center mb-5 text-gray-800 text-[1.2rem] border-b border-gray-200 pb-2.5">
+        <h3 className="m-0">Time Range</h3>
         <button
-          className="settings-button"
+          className="bg-transparent border-none text-[1.2rem] cursor-pointer text-gray-600 p-1 px-2 rounded hover:bg-gray-100 hover:text-gray-800"
           onClick={() => setIsSettingsModalOpen(true)}
           aria-label="Settings"
         >
@@ -87,51 +87,55 @@ function TimeRangeInput({
         </button>
       </div>
 
-      <div className="time-range-controls">
-        <div className="time-range-row">
-          <div className="time-input-group">
-            <h4>Start Time</h4>
-            <div className="input-row">
-              <div className="date-input">
-                <label htmlFor="start-date">Date:</label>
+      <div className="flex flex-col gap-5">
+        <div className="flex gap-[30px] flex-col md:flex-row">
+          <div className="flex-1">
+            <h4 className="m-0 mb-2.5 text-gray-800 text-[1rem]">Start Time</h4>
+            <div className="flex gap-[15px] items-center flex-col md:flex-row">
+              <div className="flex flex-col gap-1.25">
+                <label htmlFor="start-date" className="font-medium text-gray-700 text-[0.85rem]">Date:</label>
                 <input
                   id="start-date"
                   type="date"
                   value={formatDateForInput(value.startDate)}
                   onChange={handleStartDateChange}
+                  className="p-2 px-2.5 border border-gray-300 rounded text-[0.9rem] w-[130px]"
                 />
               </div>
-              <div className="time-input">
-                <label htmlFor="start-time">Time:</label>
+              <div className="flex flex-col gap-1.25">
+                <label htmlFor="start-time" className="font-medium text-gray-700 text-[0.85rem]">Time:</label>
                 <input
                   id="start-time"
                   type="time"
                   value={formatTimeForInput(value.startDate)}
                   onChange={handleStartTimeChange}
+                  className="p-2 px-2.5 border border-gray-300 rounded text-[0.9rem] w-[110px]"
                 />
               </div>
             </div>
           </div>
 
-          <div className="time-input-group">
-            <h4>End Time</h4>
-            <div className="input-row">
-              <div className="date-input">
-                <label htmlFor="end-date">Date:</label>
+          <div className="flex-1">
+            <h4 className="m-0 mb-2.5 text-gray-800 text-[1rem]">End Time</h4>
+            <div className="flex gap-[15px] items-center flex-col md:flex-row">
+              <div className="flex flex-col gap-1.25">
+                <label htmlFor="end-date" className="font-medium text-gray-700 text-[0.85rem]">Date:</label>
                 <input
                   id="end-date"
                   type="date"
                   value={formatDateForInput(value.endDate)}
                   onChange={handleEndDateChange}
+                  className="p-2 px-2.5 border border-gray-300 rounded text-[0.9rem] w-[130px]"
                 />
               </div>
-              <div className="time-input">
-                <label htmlFor="end-time">Time:</label>
+              <div className="flex flex-col gap-1.25">
+                <label htmlFor="end-time" className="font-medium text-gray-700 text-[0.85rem]">Time:</label>
                 <input
                   id="end-time"
                   type="time"
                   value={formatTimeForInput(value.endDate)}
                   onChange={handleEndTimeChange}
+                  className="p-2 px-2.5 border border-gray-300 rounded text-[0.9rem] w-[110px]"
                 />
               </div>
             </div>
@@ -144,14 +148,14 @@ function TimeRangeInput({
         onClose={() => setIsSettingsModalOpen(false)}
         title="Settings"
       >
-        <div className="settings-content">
-          <div className="setting-group">
-            <label htmlFor="modal-reference-timezone">My Timezone:</label>
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="modal-reference-timezone" className="font-medium text-gray-700 text-[0.9rem]">My Timezone:</label>
             <select
               id="modal-reference-timezone"
               value={value.referenceTimezone}
               onChange={handleReferenceTimezoneChange}
-              className="timezone-select"
+              className="p-2 px-3 border border-gray-300 rounded text-[0.9rem] bg-white max-w-[300px]"
             >
               {referenceTimezones.map(timezone => (
                 <option key={timezone.id} value={timezone.id}>
@@ -161,12 +165,13 @@ function TimeRangeInput({
             </select>
           </div>
 
-          <div className="setting-group">
-            <label className="checkbox-label">
+          <div className="flex flex-col gap-2">
+            <label className="flex items-center gap-2 cursor-pointer font-medium">
               <input
                 type="checkbox"
                 checked={showOnlyBusinessTimezones}
                 onChange={(e) => onShowOnlyBusinessTimezonesChange(e.target.checked)}
+                className="w-4 h-4 cursor-pointer"
               />
               Show only common business timezones
             </label>

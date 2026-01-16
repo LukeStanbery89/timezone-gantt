@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import {
-  ChartData,
-  ChartOptions,
-  Plugin,
+    ChartData,
+    ChartOptions,
+    Plugin as ChartJSPlugin,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { TimezoneDisplay } from '@/types';
@@ -12,7 +12,7 @@ import { transformTimezoneDataForChart, formatTimeInTimezone } from '@/utils/tim
  * Custom hook to create the time labels plugin for Chart.js
  * Memoized to prevent recreation on every render
  */
-const useTimeLabelsPlugin = (timezones: TimezoneDisplay[]): Plugin<'bar'> => {
+const useTimeLabelsPlugin = (timezones: TimezoneDisplay[]): ChartJSPlugin<'bar'> => {
   return useMemo(() => ({
     id: 'timeLabels',
     afterDraw: (chart) => {
@@ -153,7 +153,7 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
 
   if (timezones.length === 0) {
     return (
-      <div className="empty-timeline">
+      <div className="p-10 text-center text-gray-600 text-[1.1rem]">
         <p>Select timezones to view the timeline</p>
       </div>
     );
@@ -163,7 +163,7 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
 
   if (!chartData) {
     return (
-      <div className="chart-error" role="status" aria-live="polite">
+      <div className="p-5 text-center text-red-600" role="status" aria-live="polite">
         <p>Unable to display timeline. Please check your timezone selections.</p>
       </div>
     );
@@ -171,7 +171,7 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
 
   try {
   return (
-    <div className="timezone-timeline">
+    <div className="py-5 h-full overflow-auto">
       <div
         style={{ height: `${timezones.length * 60 + 40}px` }}
         role="img"
@@ -184,7 +184,7 @@ function TimezoneTimeline({ timezones, timeRange }: TimezoneTimelineProps) {
   } catch (error) {
     console.error('Error rendering chart:', error);
     return (
-      <div className="chart-error" role="alert">
+      <div className="p-5 text-center text-red-600" role="alert">
         <p>Failed to render timeline. Please try refreshing the page.</p>
       </div>
     );
