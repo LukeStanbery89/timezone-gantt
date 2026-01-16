@@ -54,10 +54,6 @@ function TimezoneGantt() {
 
   return (
     <div className="timezone-gantt">
-      <header>
-        <h1>Timezone Gantt Chart</h1>
-        <p>Visualize time ranges across multiple timezones</p>
-      </header>
       <div className="main-content">
         <div className="sidebar">
           <TimezoneSelector
