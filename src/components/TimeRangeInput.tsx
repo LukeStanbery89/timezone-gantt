@@ -93,7 +93,7 @@ function TimeRangeInput({
         <div className="flex gap-[30px] flex-col md:flex-row">
           <div className="flex-1">
             <h4 className="m-0 mb-2.5 text-gray-800 text-[1rem]">Start Time</h4>
-            <div className="flex gap-[15px] items-center flex-col md:flex-row">
+            <div className="flex gap-[15px] items-center">
               <div className="flex flex-col gap-1.25">
                 <label htmlFor="start-date" className="font-medium text-gray-700 text-[0.85rem]">Date:</label>
                 <input
@@ -119,7 +119,7 @@ function TimeRangeInput({
 
           <div className="flex-1">
             <h4 className="m-0 mb-2.5 text-gray-800 text-[1rem]">End Time</h4>
-            <div className="flex gap-[15px] items-center flex-col md:flex-row">
+            <div className="flex gap-[15px] items-center">
               <div className="flex flex-col gap-1.25">
                 <label htmlFor="end-date" className="font-medium text-gray-700 text-[0.85rem]">Date:</label>
                 <input
