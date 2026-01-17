@@ -14,7 +14,7 @@ export default defineConfig({
     postcss: './postcss.config.js',
   },
   test: {
-    globals: true,
+    globals: false,
     environment: 'jsdom',
     setupFiles: [],
   },

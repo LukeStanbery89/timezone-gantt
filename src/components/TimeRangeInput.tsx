@@ -104,13 +104,13 @@ function TimeRangeInput({
               </div>
               <div className="flex flex-col gap-1.25">
                 <label htmlFor="start-time" className="font-medium text-gray-700 text-[0.85rem]">Time:</label>
-                <input
-                  id="start-time"
-                  type="time"
-                  value={formatTimeForInput(value.startDate)}
-                  onChange={handleStartTimeChange}
-                  className="p-2 px-2.5 border border-gray-300 rounded text-[0.9rem] w-[110px]"
-                />
+                 <input
+                   id="start-time"
+                   type="time"
+                   value={formatTimeForInput(value.startDate)}
+                   onChange={handleStartTimeChange}
+                   className="p-2 px-2.5 border border-gray-300 rounded text-[0.9rem] w-[140px]"
+                 />
               </div>
             </div>
           </div>
@@ -130,13 +130,13 @@ function TimeRangeInput({
               </div>
               <div className="flex flex-col gap-1.25">
                 <label htmlFor="end-time" className="font-medium text-gray-700 text-[0.85rem]">Time:</label>
-                <input
-                  id="end-time"
-                  type="time"
-                  value={formatTimeForInput(value.endDate)}
-                  onChange={handleEndTimeChange}
-                  className="p-2 px-2.5 border border-gray-300 rounded text-[0.9rem] w-[110px]"
-                />
+                 <input
+                   id="end-time"
+                   type="time"
+                   value={formatTimeForInput(value.endDate)}
+                   onChange={handleEndTimeChange}
+                   className="p-2 px-2.5 border border-gray-300 rounded text-[0.9rem] w-[140px]"
+                 />
               </div>
             </div>
           </div>
