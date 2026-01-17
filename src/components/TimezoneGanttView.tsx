@@ -11,6 +11,9 @@ interface TimezoneGanttViewProps {
   timeRange: TimeRange;
   showOnlyBusinessTimezones: boolean;
   onTimezoneToggle: (timezone: TimezoneDisplay) => void;
+  onSelectAll: (filteredTimezones: TimezoneDisplay[]) => void;
+  onDeselectAll: (filteredTimezones: TimezoneDisplay[]) => void;
+  getSelectAllState: (filteredTimezones: TimezoneDisplay[]) => boolean | null;
   onTimeRangeChange: (timeRange: TimeRange) => void;
   onShowOnlyBusinessTimezonesChange: (enabled: boolean) => void;
 }
@@ -22,6 +25,9 @@ function TimezoneGanttView({
   timeRange,
   showOnlyBusinessTimezones,
   onTimezoneToggle,
+  onSelectAll,
+  onDeselectAll,
+  getSelectAllState,
   onTimeRangeChange,
   onShowOnlyBusinessTimezonesChange,
 }: TimezoneGanttViewProps) {
@@ -33,6 +39,9 @@ function TimezoneGanttView({
             availableTimezones={availableTimezones}
             selectedTimezones={selectedTimezones}
             onTimezoneToggle={onTimezoneToggle}
+            onSelectAll={onSelectAll}
+            onDeselectAll={onDeselectAll}
+            getSelectAllState={getSelectAllState}
           />
         </aside>
 

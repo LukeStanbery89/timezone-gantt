@@ -59,6 +59,9 @@ function TimezoneGantt() {
       timeRange={timeRangeHook.timeRange}
       showOnlyBusinessTimezones={showOnlyBusinessTimezones}
       onTimezoneToggle={timezoneSelection.handleTimezoneToggle}
+      onSelectAll={timezoneSelection.selectAllFiltered}
+      onDeselectAll={timezoneSelection.deselectAllFiltered}
+      getSelectAllState={timezoneSelection.getSelectAllState}
       onTimeRangeChange={handleTimeRangeChange}
       onShowOnlyBusinessTimezonesChange={setShowOnlyBusinessTimezones}
     />

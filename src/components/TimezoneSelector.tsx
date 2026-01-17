@@ -5,12 +5,18 @@ interface TimezoneSelectorProps {
   availableTimezones: TimezoneDisplay[];
   selectedTimezones: TimezoneDisplay[];
   onTimezoneToggle: (timezone: TimezoneDisplay) => void;
+  onSelectAll: (filteredTimezones: TimezoneDisplay[]) => void;
+  onDeselectAll: (filteredTimezones: TimezoneDisplay[]) => void;
+  getSelectAllState: (filteredTimezones: TimezoneDisplay[]) => boolean | null;
 }
 
 function TimezoneSelector({
   availableTimezones,
   selectedTimezones,
   onTimezoneToggle,
+  onSelectAll,
+  onDeselectAll,
+  getSelectAllState,
 }: TimezoneSelectorProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -25,6 +31,18 @@ function TimezoneSelector({
     );
   }, [availableTimezones, searchQuery]);
 
+  const selectAllState = getSelectAllState(filteredTimezones);
+
+  const handleSelectAllChange = () => {
+    if (selectAllState === true) {
+      // Currently all selected, deselect all
+      onDeselectAll(filteredTimezones);
+    } else {
+      // Currently not all selected, select all
+      onSelectAll(filteredTimezones);
+    }
+  };
+
   return (
     <div>
       <h3 className="mx-[15px] mb-2.5 mt-[15px] text-gray-800 text-[1.2rem] border-b border-gray-200 pb-2.5">Select Timezones</h3>
@@ -36,6 +54,23 @@ function TimezoneSelector({
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full box-border p-2 px-3 border border-gray-300 rounded text-[0.9rem] bg-white focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_2px_rgba(0,123,255,0.25)]"
         />
+      </div>
+      <div className="mx-[15px] mb-[15px]">
+        <label className="flex items-center gap-2.5 p-2 px-3 border border-gray-200 rounded-lg bg-white cursor-pointer transition-colors hover:bg-gray-50">
+          <input
+            type="checkbox"
+            checked={selectAllState === true}
+            ref={(el) => {
+              if (el) el.indeterminate = selectAllState === null;
+            }}
+            onChange={handleSelectAllChange}
+            className="m-0 w-4 h-4"
+            disabled={filteredTimezones.length === 0}
+          />
+          <span className="font-medium text-gray-800 text-[0.9rem]">
+            Select All {filteredTimezones.length > 0 && `(${filteredTimezones.length})`}
+          </span>
+        </label>
       </div>
       <div className="p-0 px-[15px] pb-[15px]">
         {filteredTimezones.map(timezone => {
