@@ -1,12 +1,14 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { TimeRange } from '@/types';
 import { getUserTimezone } from '@/utils/timezoneUtils';
+import { useLocalStorage } from './useLocalStorage';
 
 /**
  * Custom hook for managing time range state and validation
  */
 export function useTimeRange() {
-  const [timeRange, setTimeRange] = useState<TimeRange>(() => {
+  // Create default time range for new users
+  const createDefaultTimeRange = (): TimeRange => {
     const userTimezone = getUserTimezone();
 
     // Round current time up to nearest hour
@@ -26,7 +28,12 @@ export function useTimeRange() {
       endDate: endTime,
       referenceTimezone: userTimezone.id,
     };
-  });
+  };
+
+  const [timeRange, setTimeRange] = useLocalStorage<TimeRange>(
+    'timezone-gantt-time-range',
+    createDefaultTimeRange()
+  );
 
   // Memoize the change handler to prevent unnecessary re-renders
   const handleTimeRangeChange = useMemo(() =>

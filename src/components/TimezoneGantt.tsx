@@ -1,17 +1,54 @@
-import { useState } from 'react';
 import { TimeRange } from '@/types';
 import { useTimezoneSelection } from '@/hooks/useTimezoneSelection';
 import { useTimeRange } from '@/hooks/useTimeRange';
 import { useTimezoneData } from '@/hooks/useTimezoneData';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { getUserTimezone } from '@/utils/timezoneUtils';
 import TimezoneGanttView from './TimezoneGanttView';
 
 function TimezoneGantt() {
-  const [showOnlyBusinessTimezones, setShowOnlyBusinessTimezones] = useState(true);
+  const [showOnlyBusinessTimezones, setShowOnlyBusinessTimezones] = useLocalStorage(
+    'timezone-gantt-business-only',
+    true
+  );
 
   const timezoneData = useTimezoneData();
   const availableTimezones = timezoneData.getAvailableTimezones(showOnlyBusinessTimezones);
   const timezoneSelection = useTimezoneSelection(showOnlyBusinessTimezones);
   const timeRangeHook = useTimeRange();
+
+  // Reset all settings to defaults
+  const handleResetToDefaults = () => {
+    // Clear localStorage
+    try {
+      localStorage.removeItem('timezone-gantt-selected-timezones');
+      localStorage.removeItem('timezone-gantt-time-range');
+      localStorage.removeItem('timezone-gantt-business-only');
+    } catch (error) {
+      console.warn('Failed to clear localStorage:', error);
+    }
+
+    // Reset state to defaults
+    setShowOnlyBusinessTimezones(true);
+    timezoneSelection.setSelectedTimezones([]);
+
+    // Create default time range
+    const userTimezone = getUserTimezone();
+    const startTime = new Date();
+    if (startTime.getMinutes() > 0) {
+      startTime.setHours(startTime.getHours() + 1, 0, 0, 0);
+    } else {
+      startTime.setMinutes(0, 0, 0);
+    }
+    const endTime = new Date(startTime);
+    endTime.setHours(startTime.getHours() + 1);
+
+    timeRangeHook.handleTimeRangeChange({
+      startDate: startTime,
+      endDate: endTime,
+      referenceTimezone: userTimezone.id,
+    });
+  };
 
   const handleTimeRangeChange = (newTimeRange: TimeRange) => {
     try {
@@ -64,6 +101,7 @@ function TimezoneGantt() {
       getSelectAllState={timezoneSelection.getSelectAllState}
       onTimeRangeChange={handleTimeRangeChange}
       onShowOnlyBusinessTimezonesChange={setShowOnlyBusinessTimezones}
+      onResetToDefaults={handleResetToDefaults}
     />
   );
 }

@@ -8,6 +8,7 @@ interface TimeRangeInputProps {
   onChange: (value: TimeRange) => void;
   showOnlyBusinessTimezones: boolean;
   onShowOnlyBusinessTimezonesChange: (enabled: boolean) => void;
+  onResetToDefaults: () => void;
 }
 
 function TimeRangeInput({
@@ -15,7 +16,8 @@ function TimeRangeInput({
   referenceTimezones,
   onChange,
   showOnlyBusinessTimezones,
-  onShowOnlyBusinessTimezonesChange
+  onShowOnlyBusinessTimezonesChange,
+  onResetToDefaults
 }: TimeRangeInputProps) {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,18 +167,27 @@ function TimeRangeInput({
             </select>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label className="flex items-center gap-2 cursor-pointer font-medium">
-              <input
-                type="checkbox"
-                checked={showOnlyBusinessTimezones}
-                onChange={(e) => onShowOnlyBusinessTimezonesChange(e.target.checked)}
-                className="w-4 h-4 cursor-pointer"
-              />
-              Show only common business timezones
-            </label>
-          </div>
-        </div>
+           <div className="flex flex-col gap-2">
+             <label className="flex items-center gap-2 cursor-pointer font-medium">
+               <input
+                 type="checkbox"
+                 checked={showOnlyBusinessTimezones}
+                 onChange={(e) => onShowOnlyBusinessTimezonesChange(e.target.checked)}
+                 className="w-4 h-4 cursor-pointer"
+               />
+               Show only common business timezones
+             </label>
+           </div>
+
+           <div className="flex justify-end pt-4 border-t border-gray-200">
+             <button
+               onClick={onResetToDefaults}
+               className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors font-medium"
+             >
+               Reset to Defaults
+             </button>
+           </div>
+         </div>
       </Modal>
     </div>
   );

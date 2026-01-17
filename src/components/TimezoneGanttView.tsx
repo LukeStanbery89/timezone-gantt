@@ -16,6 +16,7 @@ interface TimezoneGanttViewProps {
   getSelectAllState: (filteredTimezones: TimezoneDisplay[]) => boolean | null;
   onTimeRangeChange: (timeRange: TimeRange) => void;
   onShowOnlyBusinessTimezonesChange: (enabled: boolean) => void;
+  onResetToDefaults: () => void;
 }
 
 function TimezoneGanttView({
@@ -30,6 +31,7 @@ function TimezoneGanttView({
   getSelectAllState,
   onTimeRangeChange,
   onShowOnlyBusinessTimezonesChange,
+  onResetToDefaults,
 }: TimezoneGanttViewProps) {
   return (
     <div className="max-w-[1400px] mx-auto p-5 font-sans">
@@ -46,13 +48,14 @@ function TimezoneGanttView({
         </aside>
 
         <main className="flex-1 flex flex-col gap-5" role="main" aria-label="Timeline visualization">
-          <TimeRangeInput
-            value={timeRange}
-            referenceTimezones={availableTimezones}
-            onChange={onTimeRangeChange}
-            showOnlyBusinessTimezones={showOnlyBusinessTimezones}
-            onShowOnlyBusinessTimezonesChange={onShowOnlyBusinessTimezonesChange}
-          />
+           <TimeRangeInput
+             value={timeRange}
+             referenceTimezones={availableTimezones}
+             onChange={onTimeRangeChange}
+             showOnlyBusinessTimezones={showOnlyBusinessTimezones}
+             onShowOnlyBusinessTimezonesChange={onShowOnlyBusinessTimezonesChange}
+             onResetToDefaults={onResetToDefaults}
+           />
 
           <section
             className="flex-1 border border-gray-200 rounded-lg overflow-hidden bg-white min-h-[400px] flex flex-col"

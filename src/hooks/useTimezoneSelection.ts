@@ -1,13 +1,12 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import { TimezoneDisplay } from '@/types';
 import { getAllTimezones } from '@/utils/timezoneUtils';
+import { useLocalStorage } from './useLocalStorage';
 
 /**
  * Custom hook for managing timezone selection and filtering logic
  */
 export function useTimezoneSelection(showOnlyBusinessTimezones: boolean) {
-  const [selectedTimezones, setSelectedTimezones] = useState<TimezoneDisplay[]>([]);
-
   const allTimezones = useMemo(() => getAllTimezones(), []);
   const availableTimezones = useMemo(() =>
     showOnlyBusinessTimezones
@@ -16,14 +15,17 @@ export function useTimezoneSelection(showOnlyBusinessTimezones: boolean) {
     [allTimezones, showOnlyBusinessTimezones]
   );
 
-  // Initialize with user's timezone on first load only
-  useEffect(() => {
-    const userTimezone = allTimezones.find(tz => tz.id === Intl.DateTimeFormat().resolvedOptions().timeZone);
-    if (userTimezone && selectedTimezones.length === 0) {
-      setSelectedTimezones([userTimezone]);
-    }
-    // Only run on initial mount, not when selections change
-  }, [allTimezones]);
+  // Initialize with user's timezone if localStorage is empty
+  const defaultTimezones: TimezoneDisplay[] = [];
+  const userTimezone = allTimezones.find(tz => tz.id === Intl.DateTimeFormat().resolvedOptions().timeZone);
+  if (userTimezone) {
+    defaultTimezones.push(userTimezone);
+  }
+
+  const [selectedTimezones, setSelectedTimezones] = useLocalStorage<TimezoneDisplay[]>(
+    'timezone-gantt-selected-timezones',
+    defaultTimezones
+  );
 
   const handleTimezoneToggle = useMemo(() =>
     (timezone: TimezoneDisplay) => {
